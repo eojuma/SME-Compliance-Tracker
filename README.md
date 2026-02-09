@@ -85,7 +85,7 @@ Follow these instructions to set up the project locally on your machine.
 Start by cloning this repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/SME-Compliance-Tracker.git
+git clone https://github.com/eojuma/SME-Compliance-Tracker.git
 cd SME-Compliance-Tracker
 ```
 
