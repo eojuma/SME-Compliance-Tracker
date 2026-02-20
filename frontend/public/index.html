@@ -2,10 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>SME Digital Compliance & Tax Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SME-Compliance-Tracker</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="logo">SME Tracker</h2>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" onclick="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('income')">Income & Expenses</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('tax')">Tax Compliance</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('licenses')">Business Licenses</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('reports')">Reports</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('documents')">Documents</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('settings')">Settings</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page active-page">
+            <h1>Dashboard Overview</h1>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Revenue</h3>
+                    <p class="amount">KES 420,000</p>
+                </div>
+                <div class="card">
+                    <h3>Total Expenses</h3>
+                    <p class="amount">KES 210,000</p>
+                </div>
+                <div class="card">
+                    <h3>Net Profit</h3>
+                    <p class="amount profit">KES 210,000</p>
+                </div>
+                <div class="card warning">
+                    <h3>Upcoming Tax Deadline</h3>
+                    <p>VAT Due in 5 Days</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- INCOME -->
+        <section id="income" class="page">
+            <h1>Income & Expenses</h1>
+            <div class="form-box">
+                <input type="text" placeholder="Transaction Description">
+                <input type="number" placeholder="Amount">
+                <select>
+                    <option>Income</option>
+                    <option>Expense</option>
+                </select>
+                <button class="primary-btn">Save Transaction</button>
+            </div>
+        </section>
+
+        <!-- TAX -->
+        <section id="tax" class="page">
+            <h1>Tax Compliance</h1>
+            <p>Track VAT, PAYE and Income Tax deadlines here.</p>
+        </section>
+
+        <!-- LICENSES -->
+        <section id="licenses" class="page">
+            <h1>Business Licenses</h1>
+            <p>Upload and track license expiration dates.</p>
+        </section>
+
+        <!-- REPORTS -->
+        <section id="reports" class="page">
+            <h1>Financial Reports</h1>
+            <button class="secondary-btn">Download Profit & Loss</button>
+        </section>
+
+        <!-- DOCUMENTS -->
+        <section id="documents" class="page">
+            <h1>Documents</h1>
+            <p>Store permits, invoices and certificates securely.</p>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settings" class="page">
+            <h1>Settings</h1>
+            <p>Manage profile, password and notifications.</p>
+        </section>
+
+    </main>
+</div>
+
+<script>
+function showSection(sectionId) {
+
+    // Hide all pages
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active-page");
+    });
+
+    // Remove active nav highlight
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.classList.remove("active");
+    });
+
+    // Show selected page
+    document.getElementById(sectionId).classList.add("active-page");
+
+    // Highlight clicked link
+    event.target.classList.add("active");
+}
+</script>
+
 </body>
 </html>
