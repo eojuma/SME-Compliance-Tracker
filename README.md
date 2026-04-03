@@ -1,224 +1,165 @@
+```markdown
+# SME Compliance Tracker
 
----
+**A complete business management system for small and medium enterprises**
 
-# SME-Compliance-Tracker
+## What This Does
 
-**SME-Compliance-Tracker** is a web-based platform designed to help small and medium-sized enterprises (SMEs) in Kenya manage their **tax compliance**, **business licenses**, and **financial reporting**. The app automates **tax reminders**, tracks **expenses** and **income**, stores important **business documents**, and generates **financial reports**, making it easier for business owners to stay on top of their obligations and focus on growing their businesses.
+This application helps small business owners:
+- Track expenses and income with profit/loss calculations
+- Get automatic alerts before tax deadlines
+- Never let a business license expire
+- Receive weekly market trend updates
+- Know immediately if they're making or losing money
 
----
-
-## Features
-
-* **Tax Compliance Management**: Keep track of tax payments, due dates, and deadlines.
-* **Business Licenses**: Store, track, and manage business licenses and their expiration dates.
-* **Financial Tracking**: Monitor income, expenses, and generate basic financial reports.
-* **Automated Reminders**: Get reminders about tax deadlines and license renewals.
-* **User Authentication**: Secure login for different roles (e.g., Admin, SME Owner).
-
----
-
-## Technologies
-
-This project uses the following technologies:
-
-* **Frontend**: React.js
-* **Backend**: Go (Golang)
-* **Database**: PostgreSQL
-* **Containerization**: Docker, Docker Compose
-* **Version Control**: Git & GitHub
-
----
-
-## Prerequisites
-
-Before you start, make sure you have the following installed:
-
-* **Docker**: For containerization.
-* **Docker Compose**: To easily manage multi-container applications.
-* **Node.js** (for frontend): Ensure you have `npm` or `yarn` installed.
-* **Go** (for backend): Ensure you have Go installed on your system.
-* **Git**: For version control and repository management.
-
----
-
-## Project Structure
-
-Here’s a breakdown of the project structure:
+## How It Works
 
 ```
-SME-Compliance-Tracker/
-│
-├── backend/                  # Go-based backend
-│   ├── Dockerfile            # Dockerfile for the backend
-│   ├── go.mod                # Go modules file
-│   ├── go.sum                # Go checksum file
-│   ├── main.go               # Main Go application file (API)
-│   ├── handlers/             # Contains the route handler files
-│   ├── models/               # Defines database models (e.g., User, Compliance)
-│   └── utils/                # Utility functions (e.g., for validation, date handling)
-│
-├── frontend/                 # React-based frontend
-│   ├── Dockerfile            # Dockerfile for the frontend
-│   ├── package.json          # npm package file for managing dependencies
-│   ├── public/               # Public files (index.html, images, etc.)
-│   ├── src/                  # Source code for React components
-│   └── .env                  # Environment variables for frontend configuration
-│
-├── database/                 # Database setup
-│   ├── init.sql              # SQL file for initializing the database schema
-│   └── docker-compose.yml    # Docker Compose configuration for the database and services
-│
-├── .gitignore                # Git ignore file to exclude unnecessary files
-├── .env                      # Main environment file for sensitive data
-├── README.md                 # Project overview and documentation
-└── docker-compose.yml        # Docker Compose configuration for the entire app
+User signs up → Adds their business data → System tracks everything
+                                            ↓
+                                    Automatic notifications
+                                    when things need attention
 ```
 
----
-
-## Getting Started
-
-Follow these instructions to set up the project locally on your machine.
-
-### 1. Clone the Repository
-
-Start by cloning this repository to your local machine:
+## Quick Start
 
 ```bash
 git clone https://github.com/eojuma/SME-Compliance-Tracker.git
-cd SME-Compliance-Tracker
+cd sme-tracker
 ```
 
-### 2. Build and Run the Application with Docker Compose
-
-This project uses **Docker Compose** to handle the multiple services (frontend, backend, and database). To start the project, run the following commands:
-
-1. **Build and start the containers:**
-
-   ```bash
-   docker-compose up --build
-   ```
-
-2. **Access the app:**
-
-   * The **frontend** will be accessible at `http://localhost:3000`.
-   * The **backend API** can be accessed at `http://localhost:8080`.
-   * **PostgreSQL database** is accessible at `localhost:5432`.
-
-3. **Shut down the containers**:
-   To stop the containers after you're done:
-
-   ```bash
-   docker-compose down
-   ```
-
----
-
-## Configuration
-
-### Environment Variables
-
-Create a `.env` file in the root of your project and add the following configurations:
+###  Install dependencies
 
 ```bash
-DB_HOST=localhost
-DB_USER=admin
-DB_PASSWORD=admin
-DB_NAME=sme_compliance
-PORT=8080
+go mod init sme-tracker
+go get github.com/mattn/go-sqlite3
+go get github.com/gorilla/sessions
+go get golang.org/x/crypto/bcrypt
 ```
 
-Make sure to **not** commit this file to Git as it contains sensitive information (i.e., database credentials). Add it to `.gitignore` to ensure it's excluded from version control.
+###  Run the application
 
-### Database Schema
-
-The database schema is initialized via `init.sql` inside the `database/` folder. When the **PostgreSQL** container is first launched, it will run this SQL file to create the necessary tables:
-
-```sql
-CREATE TABLE compliance (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100),
-  tax_status VARCHAR(50),
-  due_date DATE
-);
-
-CREATE TABLE business_licenses (
-  id SERIAL PRIMARY KEY,
-  business_name VARCHAR(100),
-  license_number VARCHAR(50),
-  expiration_date DATE
-);
+```bash
+go run main.go
 ```
 
----
+## Complete API Reference
 
-## Contributing
 
-We welcome contributions! To contribute to the **SME-Compliance-Tracker** project, follow these steps:
+### Authentication
 
-1. **Fork the repository** to your own GitHub account.
-2. **Clone** the forked repository to your local machine.
-3. Create a new branch for your changes:
+| Action | Method | Endpoint | Body |
+|--------|--------|----------|------|
+| Register | POST | `/api/register` | `{"email":"user@example.com","password":"secret"}` |
+| Login | POST | `/api/login` | `{"email":"user@example.com","password":"secret"}` |
+| Logout | POST | `/api/logout` | (none) |
 
-   ```bash
-   git checkout -b feature-name
-   ```
-4. **Make your changes** and commit them:
+### Expenses
 
-   ```bash
-   git commit -m "Description of changes"
-   ```
-5. **Push** your changes to your fork:
+| Action | Method | Endpoint | Body |
+|--------|--------|----------|------|
+| List all | GET | `/api/expenses` | (none) |
+| Add one | POST | `/api/expenses` | `{"amount":100,"category":"Food","date":"2026-04-03","note":"Lunch"}` |
+| Delete | DELETE | `/api/expenses` | `{"id":1}` |
 
-   ```bash
-   git push origin feature-name
-   ```
-6. **Open a pull request** to the main repository.
+### Income
 
-We will review your changes and, if everything looks good, we will merge them into the main project.
+| Action | Method | Endpoint | Body |
+|--------|--------|----------|------|
+| List all | GET | `/api/income` | (none) |
+| Add one | POST | `/api/income` | `{"amount":5000,"category":"Sales","date":"2026-04-01","note":"Payment"}` |
 
----
+### Taxes
 
-## License
+| Action | Method | Endpoint | Body |
+|--------|--------|----------|------|
+| List all | GET | `/api/taxes` | (none) |
+| Add one | POST | `/api/taxes` | `{"name":"Sales Tax","frequency":"monthly","due_day":15}` |
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+**Frequency options:** `monthly`, `quarterly`, `yearly`
 
----
+### Licenses
 
-## Acknowledgements
+| Action | Method | Endpoint | Body |
+|--------|--------|----------|------|
+| List all | GET | `/api/licenses` | (none) |
+| Add one | POST | `/api/licenses` | `{"name":"Business License","expiry_date":"2026-12-31","reminder_days":30}` |
 
-* [Docker](https://www.docker.com/) for containerization.
-* [Go](https://golang.org/) for backend development.
-* [React](https://reactjs.org/) for frontend development.
-* [PostgreSQL](https://www.postgresql.org/) for database management.
-* [GitHub](https://github.com/) for hosting the project.
+### Dashboard
 
----
+| Action | Method | Endpoint | Output |
+|--------|--------|----------|--------|
+| Get stats | GET | `/api/dashboard/stats` | Income, expenses, profit, recommendation |
 
-## Troubleshooting
+## Database Schema (Auto-Created)
 
-If you run into issues while setting up or running the project, try the following:
+The system creates these tables automatically when you first run it:
 
-1. **Docker not starting?**
+```
+users          -- Business owner accounts
+transactions   -- All expenses and income
+tax_obligations -- Tax filing deadlines
+licenses       -- Business license expirations
+```
 
-   * Ensure Docker and Docker Compose are installed and running.
-   * Restart Docker and try again.
+**No database setup required.** SQLite creates the file `sme-tracker.db` automatically.
 
-2. **Error: Port already in use?**
+## Project Structure
 
-   * Check if port `3000` or `8080` is being used by another application. You can change the ports in `docker-compose.yml`.
+```
+sme-tracker/
+├── main.go              # Complete application (single file)
+├── sme-tracker.db       # SQLite database (auto-created)
+├── cookies.txt          # Session storage (for curl testing)
+└── go.mod / go.sum      # Dependencies
+```
 
-3. **Database connection issues?**
+## What Makes This Different
 
-   * Double-check your `.env` file and make sure your database credentials are correct.
-   * Verify that the `db` service in Docker Compose is running correctly.
+### 1. Smart Profit Recommendations
+The system doesn't just show numbers. It tells you what to do:
+- **Profit > 10%** → "Healthy margin, keep going"
+- **Profit < 10%** → "Margin is thin, consider cost cutting"
+- **Loss** → "Alert: Review your highest expenses"
 
----
+### 2. Proactive Notifications (Coming in Phase 2)
+- Tax deadlines: 14, 7, 1 day before due
+- License expirations: 60, 30, 14, 7 days before
+- Weekly market trend emails
 
-### Conclusion
+### 3. Single Binary Deployment
+Everything is compiled into one executable. No dependencies to install on your server.
 
-This README provides all the necessary instructions and details for setting up, developing, and contributing to the **SME-Compliance-Tracker** project. The app is designed to automate tax and compliance tracking for SMEs in Kenya, helping them stay on top of their business obligations and simplify reporting.
+## Deployment (When Ready)
 
-Feel free to contribute, and good luck building the project!
+```bash
+# Build for production
+GOOS=linux GOARCH=amd64 go build -o sme-tracker main.go
 
----
+# Run on any Linux server
+./sme-tracker
+```
+
+## Development Roadmap
+
+### ✅ Phase 1 Complete (Current)
+- Full JSON API working
+- User authentication
+- Expense/income tracking
+- Tax and license management
+- Profit/loss calculations with smart recommendations
+
+### 🔄 Phase 2 (Next - Days 11-14)
+- Add HTML templates
+- Build web dashboard
+- Create forms for data entry
+
+### 📅 Phase 3 (Days 15-21)
+- Email notification system
+- Background scheduler
+- Weekly market trends
+
+### 🚀 Phase 4 (Days 22-28)
+- Polish UI with Tailwind CSS
+- Deploy to production
+- Testing and bug fixes
